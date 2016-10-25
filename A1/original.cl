@@ -25,10 +25,10 @@
 (defvar *path* nil
   "Path for saving files.")
 
+
 ;;;random numbers
 
 (defun call-random (m n)
-  "(m n)"
   (do ((i 0 (1+ i)))
       ((= i m) nil)
     (if (zerop n) 
@@ -36,7 +36,6 @@
       (random n))))
 
 (defun seed-random ()
-  "Seed random from the last 4 digits of time." 
   (let* ((time (get-internal-real-time))
          (n (multiple-value-bind (x y) (floor time 100) (cadr (list x y))))
          (hundreds (multiple-value-bind (x y) (floor time 100) (car (list x y))))
@@ -45,23 +44,22 @@
 
 ;;;make agents
 
-(defun initialize-array (nu nx ny ns1 ns2 nb)
-  "(nu nx ny nb)"
-  (setf *array-size* (+ nu nx ny ns1 ns2 nb)
+(defun initialize-array (nu nx ny nb)
+  (setf *array-size* (+ nu nx ny nb)
     *agents* (make-array *array-size* :initial-element nil)))
 
 ;;;(initialize-array 4 1 0)
 
 (defun make-1-agent (i s)
-  "(i s)"
+
   (setf (aref *agents* i) 
     (make-agent :id i
                 :state s)))
 
 ;;;(make-1-agent 2 'u)
 
-(defun make-agent-array (nu nx ny nb ns1 ns2)
-  "(nu nx ny nb)"
+(defun make-agent-array (nu nx ny nb)
+
   (do ((i 0 (1+ i)))
       ((= i nu))
     (make-1-agent i 'u))
@@ -71,15 +69,8 @@
   (do ((i (+ nu nx) (1+ i)))
       ((= i (+ nu nx ny)))
     (make-1-agent i 'y))
-  ; added this
   (do ((i (+ nu nx ny) (1+ i)))
-    ((= i (+ nu nx ny ns1)))
-    (make-1-agent i 's1))
-  (do ((i (+ nu nx ny ns1) (1+ i)))
-    ((= i (+ nu nx ny ns1 ns2)))
-    (make-1-agent i 's2))
-  (do ((i (+ nu nx ny ns1 ns2) (1+ i)))
-      ((= i (+ nu nx ny ns1 ns2 nb)))
+      ((= i (+ nu nx ny nb)))
     (make-1-agent i 'b)))
        
 ;;;(initialize-array 4 2 0)
@@ -89,14 +80,14 @@
 ;;;count states
 
 (defun get-agent-state (a)
-  "(a)"
+
   (let ((agent (aref *agents* a)))
     (agent-state agent)))
 
 ;;;(get-agent-state 3)
 
 (defun count-state (state)
-  "(state)"
+
   (do ((i 0 (1+ i))
        (n 0 (if (eq (get-agent-state i) state)
                 (1+ n)
@@ -107,7 +98,7 @@
 ;;;(count-state 'x)
 
 (defun count-states (states)
-  "(states)"
+
   (do ((stts states (cdr stts))
        (counts nil (cons (count-state (car stts))
                          counts)))
@@ -116,7 +107,7 @@
 ;;;(count-states '(u x y))
 
 (defun count-state-section (state start end)
-  "(state start end)"
+
   (do ((i start (1+ i))
        (n 0 (if (eq (get-agent-state i) state)
                 (1+ n)
@@ -128,8 +119,8 @@
 
 ;;;interact
 
-(defun interact-am (agents p p2 p3)
-  "(agents p)"
+(defun interact-am (agents p)
+
   (let* ((i (first agents))
          (r (second agents))
          (r-agent (aref *agents* r))
@@ -139,127 +130,52 @@
      ((and (eq r-state 'u)
            (not (eq i-state 'u))
            (not (eq i-state 'b))
-           (not (eq i-state 's1))
-           (not (eq i-state 's2))
-           (not (eq r-state 'b))
            (< (random 1.0) p))
       (setf (agent-state r-agent) i-state))
      ((and (not (eq i-state 'u))
            (not (eq i-state 'b))
            (not (eq r-state 'u))
            (not (eq r-state 'b))
-           (not (eq i-state 's1))
-           (not (eq i-state 's2))
-           (not (eq r-state 's1))
-           (not (eq r-state 's2))
            (not (eq i-state r-state))
            (< (random 1.0) p))
       (setf (agent-state r-agent) 'u))
-     ; if r's state is slow and i is not undecided/byzantine, p2 p3 chance of changing
-     ((and 
-        (not (eq i-state 's2))
-        (not (eq i-state 's1))
-        (not (eq i-state 'u))
-        (not (eq i-state 'b))
-        (not (eq r-state 's2))
-        (not (eq r-state 'b))
-        (< (random 1.0) p2))
-     (setf (agent-state r-agent) i-state))
-     ((and 
-        (not (eq i-state 's2))
-        (not (eq i-state 's1))
-        (not (eq i-state 'u))
-        (not (eq i-state 'b))
-        (not (eq r-state 's1))
-        (not (eq r-state 'b))
-        (< (random 1.0) p3))
-     (setf (agent-state r-agent) i-state))
-     (t nil))
+     (t nil))))
 
-    ))
-    
+(defun interact-ac (agents p)
 
-(defun interact-ac (agents p p2 p3)
-  "(agents p)"
   (let* ((i (first agents))
          (r (second agents))
          (r-agent (aref *agents* r))
          (i-state (get-agent-state i))
          (r-state (get-agent-state r)))
-    (cond 
-        ((and 
-             (not (eq i-state 'u))
+    (if (and (not (eq i-state 'u))
              (not (eq i-state 'b))
              (not (eq r-state 'b))
-             (not (eq r-state 's1))
-             (not (eq r-state 's2))
              (not (eq i-state r-state))
-             (not (eq i-state 's1))
-             (not (eq i-state 's2))
              (< (random 1.0) p))
-
-        (setf (agent-state r-agent) i-state))
-        ((and 
-            (not (eq i-state 'u))
-            (not (eq i-state 'b))
-            (not (eq i-state r-state))
-            (not (eq r-state 'b))
-            (not (eq r-state 's2))
-            (not (eq i-state 's1))
-            (not (eq i-state 's2))
-            (< (random 1.0) p2))
-        (setf (agent-state r-agent) i-state))
-        ((and 
-            (not (eq i-state 'u))
-            (not (eq i-state 'b))
-            (not (eq i-state r-state))
-            (not (eq r-state 's1))
-            (not (eq r-state 'b))
-            (not (eq i-state 's1))
-            (not (eq i-state 's2))
-            (< (random 1.0) p3))
-        (setf (agent-state r-agent) i-state)))))
+        (setf (agent-state r-agent) i-state))))
 
 ;;;(interact-ac '(4 0) 1.0)
 
-(defun interact-ciu (agents p p2 p3)
-  "(agents p)"
+(defun interact-ciu (agents p)
+
   (let* ((i (first agents))
          (r (second agents))
          (r-agent (aref *agents* r))
          (i-state (get-agent-state i))
          (r-state (get-agent-state r)))
-    (cond 
-        ((and (not (eq i-state 'u))
+    (if (and (not (eq i-state 'u))
              (not (eq i-state 'b))
-             (not (eq i-state 's1))
-             (not (eq i-state 's2))
              (eq r-state 'u)
              (< (random 1.0) p))
-        (setf (agent-state r-agent) i-state))
-
-        ((and (not (eq i-state 'u))
-             (not (eq i-state 'b))
-             (not (eq i-state 's1))
-             (not (eq i-state 's2))
-             (eq r-state 's1)
-             (< (random 1.0) p2))
-        (setf (agent-state r-agent) i-state))
-        ((and (not (eq i-state 'u))
-             (not (eq i-state 'b))
-             (not (eq i-state 's1))
-             (not (eq i-state 's2))
-             (eq r-state 's2)
-             (< (random 1.0) p3))
-        (setf (agent-state r-agent) i-state)))))
-
+        (setf (agent-state r-agent) i-state))))
 
 ;;;(interact-ciu '(4 0) 1.0)
 
 ;;;get initiator & responder
 
 (defun get-random-agent ()
-  "()"
+
   (random *array-size*))
 
 ;;;(get-random-agent)
@@ -276,7 +192,7 @@
 ;;;Check for consensus
 
 (defun consensusp (counts)
-  "(counts)"
+
   (let ((nu (first counts))
         (nx (second counts))
         (ny (third counts)))
@@ -294,7 +210,7 @@
 ;;;store lists in file
 
 (defun lists->file (lst file &optional (separator " "))
-  "(lst file &optional (separator " 
+
   (with-open-file
       (output-stream file :direction :output :if-exists :supersede)
     (do ((items (reverse lst) (cdr items)))
@@ -306,7 +222,7 @@
             sub-item))))))
 
 (defun print-line (lst &optional (separator " ") output-stream)
-  "(lst &optional (separator " 
+
   (do ((lst lst (cdr lst)))
       ((null lst) (terpri output-stream))
     (princ (car lst) output-stream)
@@ -315,14 +231,14 @@
 ;;; rotate list-of-lists
 
 (defun rotate (lists)
-  "(lists)"
+
   (apply #'mapcar #'list lists))
 
 ;;;(rotate '((1 2 3)
 ;;;          (4 5 6)))
 
 (defun winners (finishes)
-  "(finishes)"
+
   (do ((fnshs finishes (cdr fnshs))
        (xwins 0 (if (> (first (car fnshs)) (second (car fnshs)))
                     (1+ xwins)
@@ -338,20 +254,20 @@
 
 ;;;call algorithm
 
-(defun call-algorithm (algo p p2 p3)
-  "(algo p)"
+(defun call-algorithm (algo p)
+
   (case algo
-    (am (interact-am (get-2-random-agents) p p2 p3))
-    (ac (interact-ac (get-2-random-agents) p p2 p3))
-    (ciu (interact-ciu (get-2-random-agents) p p2 p3))
+    (am (interact-am (get-2-random-agents) p))
+    (ac (interact-ac (get-2-random-agents) p))
+    (ciu (interact-ciu (get-2-random-agents) p))
     (otherwise (error "Unknown algorithm"))))
 
 ;;;run simulation
 
-(defun run1-saturation (nu nx ny nb ns1 ns2 p p2 p3 replication algo)
-  "(nu nx ny nb p replication algo)"
-  (initialize-array nu nx ny nb ns1 ns2)
-  (make-agent-array nu nx ny nb ns1 ns2)
+(defun run1-saturation (nu nx ny nb p replication algo)
+
+  (initialize-array nu nx ny nb)
+  (make-agent-array nu nx ny nb)
   (do ((cycles 0 (1+ cycles))
        (ucount (list nu) (cons (count-state 'u) 
                                ucount))
@@ -372,12 +288,12 @@
                (reverse ycount) 
                cycles
                (list (first xcount) (first ycount)))))
-    (call-algorithm algo p p2 p3)))
+    (call-algorithm algo p)))
 
-(defun run-saturation (n nu nx ny nb ns1 ns2 p p2 p3 algorithm)
-  "(n nu nx ny nb p algorithm)"
+(defun run-saturation (n nu nx ny nb p algorithm)
+
   (seed-random)
-  (setq *path* "/Users/Elias/Documents/models/"); m/copy/results/")
+  (setq *path* "/Users/Elias/Documents/models/")
   (do ((i 0 (1+ i))
        (cycles nil)
        (ucounts nil)
@@ -404,7 +320,7 @@
                                       :direction :output)
                      (format output-stream "~a x  ~a y"
                        (first winners) (second winners))))))
-    (let ((counts (run1-saturation nu nx ny nb ns1 ns2 p p2 p3 i algorithm)))
+    (let ((counts (run1-saturation nu nx ny nb p i algorithm)))
       (setf 
        ucounts (cons (first counts)
                      ucounts)
@@ -420,23 +336,18 @@
 ;;;(run-saturation 20 73 2 0 25 1.0 'am) run for 1100 cycles
 ;;;(run-saturation 20 73 2 0 25 1.0 'ac) run for 1100 cycles
 ;;;(run-saturation 20 73 2 0 25 1.0 'ciu) run for 1100 cycles
-; (run-saturation 20 73 2 0 15 6 4 1.0 0.25 0.75 'am)
 
-(defun run1-to-cycle (nu nx ny nb ns1 ns2 max p p2 p3 replication algo)
-  "(nu nx ny nb max p replication algo)"
-  (initialize-array nu nx ny nb ns1 ns2)
-  (make-agent-array nu nx ny nb ns1 ns2)
+(defun run1-to-cycle (nu nx ny nb max p replication algo)
+
+  (initialize-array nu nx ny nb)
+  (make-agent-array nu nx ny nb)
   (do ((i 0 (1+ i))
        (ucount (list nu) (cons (count-state 'u) 
                                ucount))
        (xcount (list nx) (cons (count-state 'x) 
                                xcount))
        (ycount (list ny) (cons (count-state 'y) 
-                               ycount))
-       (s1count (list ns1) (cons (count-state 's1)
-                               s1count))
-       (s2count (list ns2) (cons (count-state 's2)
-                               s2count)))
+                               ycount)))
       ((= i max) (progn 
                    (lists->file ucount 
                                 (concatenate 'string *path* (princ-to-string replication) "ucount"))
@@ -444,28 +355,20 @@
                                 (concatenate 'string *path* (princ-to-string replication) "xcount"))
                    (lists->file ycount 
                                 (concatenate 'string *path* (princ-to-string replication) "ycount"))
-                   (lists->file s1count
-                                (concatenate 'string *path* (princ-to-string replication) "s1count"))
-                   (lists->file s2count
-                                (concatenate 'string *path* (princ-to-string replication) "s2count"))
-                   (list (reverse ucount) ;first
-                         (reverse xcount) ;second
-                         (reverse ycount) ;third
-                         (reverse s1count) ;fourth
-                         (reverse s2count) ;fifth
-                         (list (first xcount) (first ycount))))) ;sixth
-    (call-algorithm algo p p2 p3)))
+                   (list (reverse ucount) 
+                         (reverse xcount) 
+                         (reverse ycount) 
+                         (list (first xcount) (first ycount)))))
+    (call-algorithm algo p)))
 
-(defun run-to-cycle (n nu nx ny nb ns1 ns2 max p p2 p3 algorithm)
-  "(n nu nx ny nb max p algorithm)"
+(defun run-to-cycle (n nu nx ny nb max p algorithm)
+
   (seed-random)
-  (setq *path* "/Users/Elias/Documents/models/"); m/copy/results/")
+  (setq *path* "/Users/Elias/Documents/models/")
   (do ((i 0 (1+ i))
        (ucounts nil)
        (xcounts nil)
        (ycounts nil)
-       (s1counts nil)
-       (s2counts nil)
        (finishes nil))
       ((= i n) (progn
                  (lists->file
@@ -478,17 +381,13 @@
                   (reverse (rotate (reverse ycounts)))
                   (concatenate 'string *path* "ycounts"))
                  (lists->file finishes (concatenate 'string *path* "finishes"))
-                 (lists->file (reverse (rotate (reverse s1counts)))
-                    (concatenate 'string *path* "s1counts"))
-                 (lists->file (reverse (rotate (reverse s2counts)))
-                    (concatenate 'string *path* "s2counts"))
                  (let ((winners (winners finishes)))
                    (with-open-file
                        (output-stream (concatenate 'string *path* "winners") 
                                       :direction :output)
                      (format output-stream "~a x  ~a y"
                        (first winners) (second winners))))))
-    (let ((counts (run1-to-cycle nu nx ny nb ns1 ns2 max p p2 p3 i algorithm)))
+    (let ((counts (run1-to-cycle nu nx ny nb max p i algorithm)))
       (setf 
        ucounts (cons (first counts)
                      ucounts)
@@ -496,24 +395,18 @@
                      xcounts)
        ycounts (cons (third counts)
                      ycounts)
-       s1counts (cons (fourth counts)
-                     s1counts)
-       s2counts (cons (fifth counts)
-                     s2counts)
-       finishes (cons (sixth counts)
+       finishes (cons (fourth counts)
                       finishes)))))
 
 ;;;treatment conditions
 ;;;(run-to-cycle 20 73 2 0 25 1100 1.0 'am)
 ;;;(run-to-cycle 20 73 2 0 25 1100 1.0 'ac)
 ;;;(run-to-cycle 20 73 2 0 25 1100 1.0 'ciu)
-;;;(run-to-cycle 20 73 2 0 15 6 4 1100 1.0 0.25 0.75 'am)
 
 ;;;control conditions
 ;;;(run-to-cycle 20 74 1 0 25 770 1.0 'am) 
 ;;;(run-to-cycle 20 74 1 0 25 770 1.0 'ac) 
 ;;;(run-to-cycle 20 74 1 0 25 770 1.0 'ciu) 
-;;; (run-to-cycle 20 74 1 0 15 6 4 770 1.0 0.25 0.75 'am)
 
 ;;;conformity conditions 14 or 12 x
 ;;;(run-to-cycle 20 60 14 1 25 825 1.0 'am)
@@ -525,25 +418,23 @@
 ;;;(run-to-cycle 20 64 10 1 25 825 1.0 'ac)
 ;;;(run-to-cycle 20 64 10 1 25 825 1.0 'ciu)
 
-(defun run1-to-cycle-switch (nu nx ny ns1 ns2 nb max p p2 p3 algo)
-  "(nu nx ny nb max p algo)"
-  (initialize-array nu nx ny ns1 ns2 nb)
-  (make-agent-array nu nx ny ns1 ns2 nb)
+(defun run1-to-cycle-switch (nu nx ny nb max p algo)
+
+  (initialize-array nu nx ny nb)
+  (make-agent-array nu nx ny nb)
   (do ((i 0 (1+ i)))
       ((= i max) (list (count-state-section 'u 75 89)
                        (count-state-section 'x 75 89)
                        (count-state-section 'y 75 89)
-                       (count-state-section 's1 75 89)
-                       (count-state-section 's2 75 89)
                        (count-state-section 'b 75 89)))
-    (call-algorithm algo p p2 p3)))
+    (call-algorithm algo p)))
 
-(defun run-to-cycle-switch (n nu nx ny nb ns1 ns2 max p p2 p3 algorithm)
-  "(n nu nx ny nb max p algorithm)"
+(defun run-to-cycle-switch (n nu nx ny nb max p algorithm)
+
   (seed-random)
   (setq *path* "/Users/Elias/Documents/models/")
   (do ((i 0 (1+ i))
-       (counts nil (cons (run1-to-cycle-switch nu nx ny ns1 ns2 nb max p p2 p3 algorithm)
+       (counts nil (cons (run1-to-cycle-switch nu nx ny nb max p algorithm)
                          counts)))
       ((= i n) (lists->file 
                 counts
@@ -552,7 +443,6 @@
 ;;;(run-to-cycle-switch 20 0 75 14 25 1100 1.0 'am)
 ;;;(run-to-cycle-switch 20 0 75 14 25 1100 1.0 'ac)
 ;;;(run-to-cycle-switch 20 0 75 14 25 1100 1.0 'ciu)
-; (run-to-cycle-switch 20 0 75 14 15 6 4 1100 1.0 0.25 0.75 'am)
 
 ;;;(run-to-cycle-switch 20 0 75 14 25 550 1.0 'am)
 ;;;(run-to-cycle-switch 20 0 75 14 25 550 1.0 'ac)
@@ -560,10 +450,10 @@
 
 ;;;persist over years
 
-(defun run1-to-cycle-persist (nu nx ny ns1 ns2 nb max p p2 p3 replication algo)
-  "(nu nx ny nb max p replication algo)"
-  (initialize-array nu nx ny nb ns1 ns2)
-  (make-agent-array nu nx ny nb ns1 ns2)
+(defun run1-to-cycle-persist (nu nx ny nb max p replication algo)
+
+  (initialize-array nu nx ny nb)
+  (make-agent-array nu nx ny nb)
   (do ((i 0 (1+ i))
        (countx-newbies nil (cons (count-state-section 'x 0 45)
                                  countx-newbies))
@@ -577,12 +467,12 @@
                     countx-vets
                     (concatenate 'string *path* (princ-to-string replication) "countx-vets"))
                    (list (reverse countx-newbies) (reverse countx-vets))))
-    (call-algorithm algo p p2 p3)))
+    (call-algorithm algo p)))
 
-(defun run-to-cycle-persist (n nu nx ny nb ns1 ns2 max p p2 p3 algorithm)
-  "(n nu nx ny nb max p algorithm)"
+(defun run-to-cycle-persist (n nu nx ny nb max p algorithm)
+
   (seed-random)
-  (setq *path* "/Users/Elias/Documents/models/") ;m/copy/results/")
+  (setq *path* "/Users/Elias/Documents/models/")
   (do ((i 0 (1+ i))
        (countx-newbies nil)
        (countx-vets nil))
@@ -592,7 +482,8 @@
                   (concatenate 'string *path* "countx-newbies"))
                  (lists->file 
                   (reverse (rotate (reverse countx-vets)))
-                  (concatenate 'string *path* "countx-vets")))) (let ((countx-both (run1-to-cycle-persist nu nx ns1 ns2 ny nb max p p2 p3 i algorithm)))
+                  (concatenate 'string *path* "countx-vets"))))
+    (let ((countx-both (run1-to-cycle-persist nu nx ny nb max p i algorithm)))
       (setf 
        countx-newbies (cons (first countx-both)
                             countx-newbies)
