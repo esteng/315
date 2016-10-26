@@ -10,6 +10,7 @@ ciu_path = "/Users/Elias/Documents/models_ciu_original/"
 paths = c(myac_path,ac_path,myam_path,am_path, myciu_path,ciu_path)
 names = c('myac','ac', 'myam', 'am', 'myciu', 'ciu')
 
+
 #S1 data
 df = read.csv(paste(path,"s1counts", sep = ""), header=TRUE, sep  = " ")
 df$X = NULL
@@ -236,5 +237,84 @@ ggplot(solver_total) +
 
 
 
+# aggregate plot
+uacog = read.csv(paste(ac_path, "ucounts", sep = ""), header = FALSE, sep = " ")
+xacog = read.csv(paste(ac_path, "xcounts", sep = ""), header = FALSE, sep = " ")
+yacog = read.csv(paste(ac_path, "ycounts", sep = ""), header = FALSE, sep = " ")
+uacog$V21 = NULL
+xacog$V21 = NULL
+yacog$V21 = NULL
 
+x_ac = read.csv(paste(myac_path,"xcounts", sep = ""), header = FALSE, sep = " ")
+x_ac$V21 = NULL
+u_ac = read.csv(paste(myac_path,"ucounts", sep = ""), header = FALSE, sep = " ")
+u_ac$V21 = NULL
+
+
+uamog = read.csv(paste(am_path, "ucounts", sep = ""), header = FALSE, sep = " ")
+xamog = read.csv(paste(am_path, "xcounts", sep = ""), header = FALSE, sep = " ")
+yamog = read.csv(paste(am_path, "ycounts", sep = ""), header = FALSE, sep = " ")
+uamog$V21 = NULL
+xamog$V21 = NULL
+yamog$V21 = NULL
+
+
+uciuog = read.csv(paste(ciu_path, "ucounts", sep = ""), header = FALSE, sep = " ")
+xciuog = read.csv(paste(ciu_path, "xcounts", sep = ""), header = FALSE, sep = " ")
+yciuog = read.csv(paste(ciu_path, "ycounts", sep = ""), header = FALSE, sep = " ")
+uciuog$V21 = NULL
+xciuog$V21 = NULL
+yciuog$V21 = NULL
+
+
+
+uacog_m = data.frame(means = rowMeans(uacog), ID = seq.int(nrow(uacog)))
+xacog_m = data.frame(means = rowMeans(xacog), ID = seq.int(nrow(xacog)))
+uac = data.frame(means = rowMeans(u_ac), ID = seq.int(nrow(u_ac)))
+xac = data.frame(means = rowMeans(x_ac), ID = seq.int(nrow(x_ac)))
+
+ggplot()+
+  geom_line(data= uacog_m, aes(x = uacog_m$ID, y = uacog_m$means, colour = "orig. U"))+
+  geom_line(data = xacog_m, aes(x = xacog_m$ID, y = xacog_m$means, colour = "orig. X"))+
+  geom_line(data = uac, aes(x = uac$ID, y = uac$means, colour = "new U"))+
+  geom_line(data = xac, aes(x = xac$ID, y = xac$means, colour = "new X"))+
+  labs(title = "AC", y = "mean agents", x = "cycle")
+
+
+x_am = read.csv(paste(myam_path,"xcounts", sep = ""), header = FALSE, sep = " ")
+x_am$V21 = NULL
+u_am = read.csv(paste(myam_path,"ucounts", sep = ""), header = FALSE, sep = " ")
+u_am$V21 = NULL
+
+
+uamog_m = data.frame(means = rowMeans(uamog), ID = seq.int(nrow(uamog)))
+xamog_m = data.frame(means = rowMeans(xamog), ID = seq.int(nrow(xamog)))
+uam = data.frame(means = rowMeans(u_am), ID = seq.int(nrow(u_am)))
+xam = data.frame(means = rowMeans(x_am), ID = seq.int(nrow(x_am)))
+
+ggplot()+
+  geom_line(data= uamog_m, aes(x = uamog_m$ID, y = uamog_m$means, colour = "orig. U"))+
+  geom_line(data = xamog_m, aes(x = xamog_m$ID, y = xamog_m$means, colour = "orig. X"))+
+  geom_line(data = uam, aes(x = uam$ID, y = uam$means, colour = "new U"))+
+  geom_line(data = xam, aes(x = xam$ID, y = xam$means, colour = "new X"))+
+  labs(title = "AM", y = "mean agents", x = "cycle")
+
+
+x_ciu = read.csv(paste(myciu_path,"xcounts", sep = ""), header = FALSE, sep = " ")
+x_ciu$V21 = NULL
+u_ciu = read.csv(paste(myciu_path,"ucounts", sep = ""), header = FALSE, sep = " ")
+u_ciu$V21 = NULL
+
+
+uciuog_m = data.frame(means = rowMeans(uciuog), ID = seq.int(nrow(uciuog)))
+xciuog_m = data.frame(means = rowMeans(xciuog), ID = seq.int(nrow(xciuog)))
+uciu = data.frame(means = rowMeans(u_ciu), ID = seq.int(nrow(u_ciu)))
+xciu = data.frame(means = rowMeans(x_ciu), ID = seq.int(nrow(x_ciu)))
+
+ggplot()+
+  geom_line(data= uciuog_m, aes(x = uciuog_m$ID, y = uciuog_m$means, colour = "orig. U"))+
+  geom_line(data = xciuog_m, aes(x = xciuog_m$ID, y = xciuog_m$means, colour = "orig. X"))+
+  geom_line(data = uciu, aes(x = uciu$ID, y = uciu$means, colour = "new U"))+
+  geom_line(data = xciu, aes(x = xciu$ID, y = xciu$means, colour = "new X"))+
+  labs(title = "CIU", y = "mean agents", x = "cycle")
 
