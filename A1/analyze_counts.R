@@ -1,11 +1,11 @@
 require(ggplot2)
 require(Hmisc)
 
-myac_path = "/Users/Elias/Documents/models_ac/"
+myac_path = "/Users/Elias/Documents/models/cycle/ac/"
 ac_path = "/Users/Elias/Documents/models_ac_original/"
-myam_path = "/Users/Elias/Documents/models_am/"
+myam_path = "/Users/Elias/Documents/models/cycle/am/"
 am_path = "/Users/Elias/Documents/models_am_original/"
-myciu_path = "/Users/Elias/Documents/models_ciu/"
+myciu_path = "/Users/Elias/Documents/models/cycle/ciu/"
 ciu_path = "/Users/Elias/Documents/models_ciu_original/"
 paths = c(myac_path,ac_path,myam_path,am_path, myciu_path,ciu_path)
 names = c('myac','ac', 'myam', 'am', 'myciu', 'ciu')
@@ -231,6 +231,8 @@ ggplot(solver_total) +
   geom_line(aes(x = solver_total$ID, y = solver_total$c_xciu_up , colour = "Ctrl CI")) +
   geom_line(aes(x = solver_total$ID, y = solver_total$c_xciu_low , colour = "Ctrl CI")) +
   labs(title = "CIU", x = "cycle", y = "# solvers")
+
+
 
 
 

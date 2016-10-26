@@ -361,12 +361,12 @@
                                ycount)))
       ((consensusp (list (first ucount) (first xcount) (first ycount)))
        (progn 
-         (lists->file ucount 
-                      (concatenate 'string *path* (princ-to-string replication) "ucount"))
-         (lists->file xcount 
-                      (concatenate 'string *path* (princ-to-string replication) "xcount"))
-         (lists->file ycount 
-                      (concatenate 'string *path* (princ-to-string replication) "ycount"))
+         ; (lists->file ucount 
+         ;              (concatenate 'string *path* (princ-to-string replication) "ucount"))
+         ; (lists->file xcount 
+         ;              (concatenate 'string *path* (princ-to-string replication) "xcount"))
+         ; (lists->file ycount 
+         ;              (concatenate 'string *path* (princ-to-string replication) "ycount"))
          (list (reverse ucount) 
                (reverse xcount) 
                (reverse ycount) 
@@ -377,7 +377,7 @@
 (defun run-saturation (n nu nx ny nb ns1 ns2 p p2 p3 algorithm)
   "(n nu nx ny nb p algorithm)"
   (seed-random)
-  (setq *path* "/Users/Elias/Documents/models/"); m/copy/results/")
+  (setq *path* "/Users/Elias/Documents/models/saturation/"); m/copy/results/")
   (do ((i 0 (1+ i))
        (cycles nil)
        (ucounts nil)
@@ -420,7 +420,7 @@
 ;;;(run-saturation 20 73 2 0 25 1.0 'am) run for 1100 cycles
 ;;;(run-saturation 20 73 2 0 25 1.0 'ac) run for 1100 cycles
 ;;;(run-saturation 20 73 2 0 25 1.0 'ciu) run for 1100 cycles
-; (run-saturation 20 73 2 0 15 6 4 1.0 0.25 0.75 'am)
+; (run-saturation 20 73 2 0 15 4 6 1.0 0.25 0.75 'am)
 
 (defun run1-to-cycle (nu nx ny nb ns1 ns2 max p p2 p3 replication algo)
   "(nu nx ny nb max p replication algo)"
@@ -459,7 +459,7 @@
 (defun run-to-cycle (n nu nx ny nb ns1 ns2 max p p2 p3 algorithm)
   "(n nu nx ny nb max p algorithm)"
   (seed-random)
-  (setq *path* "/Users/Elias/Documents/models/"); m/copy/results/")
+  (setq *path* "/Users/Elias/Documents/models/cycle/"); m/copy/results/")
   (do ((i 0 (1+ i))
        (ucounts nil)
        (xcounts nil)
@@ -507,13 +507,13 @@
 ;;;(run-to-cycle 20 73 2 0 25 1100 1.0 'am)
 ;;;(run-to-cycle 20 73 2 0 25 1100 1.0 'ac)
 ;;;(run-to-cycle 20 73 2 0 25 1100 1.0 'ciu)
-;;;(run-to-cycle 20 73 2 0 15 6 4 1100 1.0 0.25 0.75 'am)
+;;;(run-to-cycle 20 73 2 0 15 4 6 1100 1.0 0.25 0.75 'am)
 
 ;;;control conditions
 ;;;(run-to-cycle 20 74 1 0 25 770 1.0 'am) 
 ;;;(run-to-cycle 20 74 1 0 25 770 1.0 'ac) 
 ;;;(run-to-cycle 20 74 1 0 25 770 1.0 'ciu) 
-;;; (run-to-cycle 20 74 1 0 15 6 4 770 1.0 0.25 0.75 'am)
+;;; (run-to-cycle 20 74 1 0 15 4 6 770 1.0 0.25 0.75 'am)
 
 ;;;conformity conditions 14 or 12 x
 ;;;(run-to-cycle 20 60 14 1 25 825 1.0 'am)
@@ -552,7 +552,7 @@
 ;;;(run-to-cycle-switch 20 0 75 14 25 1100 1.0 'am)
 ;;;(run-to-cycle-switch 20 0 75 14 25 1100 1.0 'ac)
 ;;;(run-to-cycle-switch 20 0 75 14 25 1100 1.0 'ciu)
-; (run-to-cycle-switch 20 0 75 14 15 6 4 1100 1.0 0.25 0.75 'am)
+; (run-to-cycle-switch 20 0 75 14 15 4 6 1100 1.0 0.25 0.75 'am)
 
 ;;;(run-to-cycle-switch 20 0 75 14 25 550 1.0 'am)
 ;;;(run-to-cycle-switch 20 0 75 14 25 550 1.0 'ac)
@@ -570,19 +570,20 @@
        (countx-vets nil (cons (count-state-section 'x 45 75) 
                               countx-vets)))
       ((= i max) (progn 
-                   (lists->file 
-                    countx-newbies
-                    (concatenate 'string *path* (princ-to-string replication) "countx-newbies"))
-                   (lists->file 
-                    countx-vets
-                    (concatenate 'string *path* (princ-to-string replication) "countx-vets"))
+                   ; (lists->file 
+                   ;  countx-newbies
+                   ;  (concatenate 'string *path* (princ-to-string replication) "countx-newbies"))
+                   ; (lists->file 
+                   ;  countx-vets
+                   ;  (concatenate 'string *path* (princ-to-string replication) "countx-vets"))
                    (list (reverse countx-newbies) (reverse countx-vets))))
     (call-algorithm algo p p2 p3)))
 
 (defun run-to-cycle-persist (n nu nx ny nb ns1 ns2 max p p2 p3 algorithm)
   "(n nu nx ny nb max p algorithm)"
   (seed-random)
-  (setq *path* "/Users/Elias/Documents/models/") ;m/copy/results/")
+
+  (setq *path* "/Users/Elias/Documents/models/persist/") ;m/copy/results/")
   (do ((i 0 (1+ i))
        (countx-newbies nil)
        (countx-vets nil))
@@ -600,6 +601,9 @@
                          countx-vets)))))
                                  
 ;;;(run-to-cycle-persist 20 45 30 0 25 275 1.0 'am)
+;;;(run-to-cycle-persist 20 45 30 0 15 4 6 275 1.0 0.25 0.75 'am)
+;;;(run-to-cycle-persist 20 45 30 0 15 4 6 275 1.0 0.25 0.75 'ac)
+;;;(run-to-cycle-persist 20 45 30 0 15 4 6 275 1.0 0.25 0.75 'ciu)
 ;;;(run-to-cycle-persist 20 45 30 0 25 275 1.0 'ac)
 ;;;(run-to-cycle-persist 20 45 30 0 25 275 1.0 'ciu)
 
