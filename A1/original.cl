@@ -293,7 +293,7 @@
 (defun run-saturation (n nu nx ny nb p algorithm)
 
   (seed-random)
-  (setq *path* "/Users/Elias/Documents/models/")
+  (setq *path* "/Users/Elias/Documents/models_ciu_original/")
   (do ((i 0 (1+ i))
        (cycles nil)
        (ucounts nil)

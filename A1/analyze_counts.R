@@ -318,3 +318,5 @@ ggplot()+
   geom_line(data = xciu, aes(x = xciu$ID, y = xciu$means, colour = "new X"))+
   labs(title = "CIU", y = "mean agents", x = "cycle")
 
+
+
