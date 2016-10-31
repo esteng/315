@@ -64,8 +64,8 @@ solver_total$ac_lower = solver_total$x_ac - 1.96*solver_total$ac_stderr
 
 ggplot() + 
   geom_line(data = solver_total, aes(x = solver_total$ID, y = solver_total$x_ac, colour = "orig. mean")) + 
-  geom_line(data = solver_total, aes(x = solver_total$ID, y = solver_total$lower , colour = "orig. CI")) +
-  geom_line(data = solver_total,aes(x = solver_total$ID, y = solver_total$upper , colour = "orig. CI")) +
+  geom_line(data = solver_total, aes(x = solver_total$ID, y = solver_total$ac_lower , colour = "orig. CI")) +
+  geom_line(data = solver_total,aes(x = solver_total$ID, y = solver_total$ac_upper , colour = "orig. CI")) +
   geom_line(data = new_total, aes(x = new_total$ID, y = new_total$new_ac, colour = "newbie mean"))+
   geom_line(data = new_total, aes(x = new_total$ID, y =new_total$ac_upper , colour = "newbie CI")) +
   geom_line(data = new_total, aes(x = new_total$ID, y =new_total$ac_lower , colour = "newbie CI")) +
@@ -84,8 +84,8 @@ solver_total$ciu_lower = solver_total$x_ciu - 1.96*solver_total$ciu_stderr
 
 ggplot() + 
   geom_line(data = solver_total, aes(x = solver_total$ID, y = solver_total$x_ciu, colour = "orig. mean")) + 
-  geom_line(data = solver_total, aes(x = solver_total$ID, y = solver_total$lower , colour = "orig. CI")) +
-  geom_line(data = solver_total,aes(x = solver_total$ID, y = solver_total$upper , colour = "orig. CI")) +
+  geom_line(data = solver_total, aes(x = solver_total$ID, y = solver_total$ciu_lower , colour = "orig. CI")) +
+  geom_line(data = solver_total,aes(x = solver_total$ID, y = solver_total$ciu_upper , colour = "orig. CI")) +
   geom_line(data = new_total, aes(x = new_total$ID, y = new_total$new_ciu, colour = "newbie mean"))+
   geom_line(data = new_total, aes(x = new_total$ID, y =new_total$ciu_upper , colour = "newbie CI")) +
   geom_line(data = new_total, aes(x = new_total$ID, y =new_total$ciu_lower , colour = "newbie CI")) +
