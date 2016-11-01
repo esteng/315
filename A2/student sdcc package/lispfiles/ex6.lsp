@@ -1,6 +1,8 @@
 ;file: ex6.cl
 ;Copyright 1997-2005 Thomas R. Shultz, All rights reserved
 
+(defvar *path* "/Users/Elias/315/A2/results/")
+
 (defun continuous-xor (start step)
   "(start step)
 Make training or test patterns for continuous-xor."
@@ -34,7 +36,6 @@ Record error every 10th output epoch."
       *record-test-errors* nil
       *mark-hiddens-errors* nil
       *sdcc* nil
-      *path* "c:\\Documents and Settings\\tom\\My Documents\\models\\sdcc\\problems\\ex6\\"
       *record-multi-errors* t
       *multi-test-patterns* '((((.15 .95) (.5))
                                ((.95 .95) (-.5))
