@@ -1,0 +1,5 @@
+(load "cc.lsp")
+(load "sdcc.lsp")
+(load "cxor.lsp")
+(load "lispfiles/ex6.lsp") 
+
