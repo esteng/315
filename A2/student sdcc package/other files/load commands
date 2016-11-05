@@ -1,0 +1,8 @@
+(load "cc.lsp")
+(load "sdcc.lsp")
+(load "sdcc-cessation.lsp")
+(load "cxor-learnability.lsp")
+
+
+
+(run-learnability 50 2 .15 20 "/Users/Elias/315/A2/results/test_learnability/")
