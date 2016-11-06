@@ -5,4 +5,5 @@
 
 
 
-(run-learnability 50 2 .15 20 "/Users/Elias/315/A2/results/test_learnability/")
+(run-learnability 100 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=100/")
+
