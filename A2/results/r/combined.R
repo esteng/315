@@ -25,6 +25,10 @@ ggplot()+
   geom_line(data = orig_50, aes(x=orig_50$ID, y=orig_50$V1, colour = 'orig 50%'))+
   geom_point(data=orig_50, aes(x=orig_50$ID, y=orig_50$V2, colour = 'orig 50%'))+
   geom_line(data = orig_100, aes(x=orig_100$ID, y=orig_100$V1, colour = 'orig 100%'))+
-  geom_point(data=orig_100, aes(x=orig_100$ID, y=orig_100$V2, colour = 'orig 100%'))
+  geom_point(data=orig_100, aes(x=orig_100$ID, y=orig_100$V2, colour = 'orig 100%'))+
+  labs(x = "epoch", y = "train error")
+
+
+
 
 
