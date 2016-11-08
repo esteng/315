@@ -895,7 +895,7 @@
                     ,@(when slopes-p
                         '((os (svref *output-slopes* j)))))
                (declare (short-float dif err-prime))
-               (unless (<  dif *score-threshold*)
+               (unless (< (abs dif) *score-threshold*)
                  (incf ,err-bits))
                (incf-sf ,true-err (*sf dif dif))
                (setf (fvref *errors* j) err-prime)      
@@ -1008,7 +1008,7 @@
                          (= 0 (mod i *test-interval*)))
                 (test-epoch))
               (train-outputs-epoch)
-              (cond ((zerop *error-bits*)
+              (cond ((and (zerop *error-bits*) (not (zerop *epoch*)))
                      (record-output-weights)
                      (return :win))
                     ((zerop *output-patience*))

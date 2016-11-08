@@ -5,25 +5,26 @@
 
 
 
-(run-learnability 100 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=100/")
-(run-learnability 90 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=90/")
-(run-learnability 80 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=80/")
-(run-learnability 70 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=70/")
-(run-learnability 60 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=60/")
-(run-learnability 40 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=40/")
-(run-learnability 30 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=30/")
-(run-learnability 20 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=20/")
-(run-learnability 10 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=10/")
+(run-learnability 100 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=100/")
+(run-learnability 90 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=90/")
+(run-learnability 80 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=80/")
+(run-learnability 70 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=70/")
+(run-learnability 60 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=60/")
+(run-learnability 40 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=40/")
+(run-learnability 30 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=30/")
+(run-learnability 20 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=20/")
+(run-learnability 10 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=10/")
+(run-learnability 0 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=0/")
 
 
 
-(run-learnability 95 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=95/")
-(run-learnability 85 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=85/")
-(run-learnability 75 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=75/")
+(run-learnability 95 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=95/")
+(run-learnability 85 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=85/")
+(run-learnability 75 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=75/")
 
 
 
-(run-learnability 50 2 .15 20 "/Users/Elias/315/A2/results/my_learnability=50/")
+(run-learnability 50 2 .15 20 "/Users/Elias/315/A2/results/my_learnability/my_learnability=50/")
 
 
 (run-learnability 90 2 .15 20 "/Users/Elias/315/A2/results/original_learnability=90/")
@@ -34,7 +35,7 @@
 (run-learnability 30 2 .15 20 "/Users/Elias/315/A2/results/original_learnability=30/")
 (run-learnability 20 2 .15 20 "/Users/Elias/315/A2/results/original_learnability=20/")
 (run-learnability 10 2 .15 20 "/Users/Elias/315/A2/results/original_learnability=10/")
-
+(run-learnability 0 2 .15 20 "/Users/Elias/315/A2/results/original_learnability/original_learnability=0/")
 
 
 (run-learnability 95 2 .15 20 "/Users/Elias/315/A2/results/original_learnability=95/")

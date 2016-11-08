@@ -16,7 +16,7 @@ def convert_file(file):
     towrite = None
 
     for i,line in enumerate(reversed(lines)):
-        if line.strip() == "h":
+        if line.strip() in ["h", "H"]:
             towrite = lambda x: x+.46
             continue
         else:

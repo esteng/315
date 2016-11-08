@@ -1,9 +1,9 @@
 require(ggplot2)
 
-my_50_path = "/Users/Elias/315/A2/results/my_learnability=50/"
-my_100_path = "/Users/Elias/315/A2/results/my_learnability=100/"
-orig_50_path = "/Users/Elias/315/A2/results/original_learnability=50/"
-orig_100_path = "/Users/Elias/315/A2/results/original_learnability=100/"
+my_50_path = "/Users/Elias/315/A2/results/my_learnability/my_learnability=50/"
+my_100_path = "/Users/Elias/315/A2/results/my_learnability/my_learnability=100/"
+orig_50_path = "/Users/Elias/315/A2/results/original_learnability/original_learnability=50/"
+orig_100_path = "/Users/Elias/315/A2/results/original_learnability/original_learnability=100/"
 
 my_50 = read.csv(paste(my_50_path, "train-errors0_clean", sep = ""), header = FALSE)
 my_50$ID <-seq.int(nrow(my_50))

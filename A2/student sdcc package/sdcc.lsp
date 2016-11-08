@@ -457,7 +457,7 @@ Modified to use *proportion-threshold* when learning continuous functions."
                               1
                             (*sf *proportion-threshold* target))
                         *score-threshold*)))
-                 (unless (< dif score-threshold)
+                 (unless (< (abs dif) *score-threshold*)
                    (incf ,err-bits)))
                
                (incf-sf ,true-err (*sf dif dif))
@@ -558,7 +558,7 @@ if *multi-test-patterns*."
               (train-outputs-epoch)
               (cond ((> *epoch* last-epoch)
                      (return :stop))
-                    ((zerop *error-bits*)
+                    ((and (zerop *error-bits*) (not (zerop *epoch*)))
                      (record-output-weights)
                      (return :win))
                     ((zerop *output-patience*))
