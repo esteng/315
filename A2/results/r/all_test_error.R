@@ -2,20 +2,20 @@ require(ggplot2)
 library(directlabels)
 
 
-df0 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_0.csv', header= TRUE)
-df10 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_10.csv', header= TRUE)
-df20 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_20.csv', header= TRUE)
-df30 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_30.csv', header= TRUE)
-df40 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_40.csv', header= TRUE)
-df50 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_50.csv', header= TRUE)
-df60 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_60.csv', header= TRUE)
-df70 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_70.csv', header= TRUE)
-df75 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_75.csv', header= TRUE)
-df80 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_80.csv', header= TRUE)
-df85 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_85.csv', header= TRUE)
-df90 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_90.csv', header= TRUE)
-df95 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_95.csv', header= TRUE)
-df100 = read.csv('/Users/Elias/315/A2/results/averages/all_averages_100.csv', header= TRUE)
+df0 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_0.csv', header= TRUE)
+df10 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_10.csv', header= TRUE)
+df20 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_20.csv', header= TRUE)
+df30 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_30.csv', header= TRUE)
+df40 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_40.csv', header= TRUE)
+df50 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_50.csv', header= TRUE)
+df60 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_60.csv', header= TRUE)
+df70 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_70.csv', header= TRUE)
+df75 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_75.csv', header= TRUE)
+df80 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_80.csv', header= TRUE)
+df85 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_85.csv', header= TRUE)
+df90 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_90.csv', header= TRUE)
+df95 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_95.csv', header= TRUE)
+df100 = read.csv('/Users/Elias/315/A2/results/test_averages/all_averages_100.csv', header= TRUE)
 
 ggplot()+
   geom_line(data=df0, aes(x=df0$ID, y=df0$percent, colour = "0%"))+
@@ -46,7 +46,7 @@ ggplot()+
   geom_dl(data=df95, aes(label = "95%", x=df95$ID, y=df95$percent),  method =list(dl.combine("last.points"))) +
   geom_line(data=df100, aes(x=df100$ID, y=df100$percent, colour = "100%"))+
   geom_dl(data=df100, aes(label = "100%", x=df100$ID, y=df100$percent),  method =list(dl.combine("last.points")))+
-  labs(x = "epoch", y = "mean train error")+
+  labs(x = "epoch", y = "mean test error")+
   scale_colour_discrete(guide = FALSE)
 
 

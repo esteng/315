@@ -22,11 +22,11 @@ def get_count(list):
 all_averages = []
 
 def process_file(i):
-    f2 = open("/Users/Elias/315/A2/results/averages/all_averages_{}.csv".format(i), "w")
+    f2 = open("/Users/Elias/315/A2/results/patience_test_averages/all_averages_{}.csv".format(i), "w")
     f2cw = csv.writer(f2)
     total = []
     averages = []
-    with open("/Users/Elias/315/A2/results/my_learnability/my_learnability={}/train-errors".format(i)) as f1:
+    with open("/Users/Elias/315/A2/results/patience/my_learnability={}/test-errors".format(i)) as f1:
         lines = [x.replace("h", '') for x in f1.readlines()]
     for line in lines:
         split = line.split(" ")
