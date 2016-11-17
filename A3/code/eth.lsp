@@ -227,7 +227,21 @@ Do 2 agents, defined by their r & c, have the same tag?"
   (= (agent-group agent1-r agent1-c)
      (agent-group agent2-r agent2-c)))
 
-(defun donate? (igs ogs same-group?)
+
+(defun calc-prob (i j)
+    "(i j) calculate probability of cooperation given number of times i has been betrayed by j
+    using formula: log(10)/log(10+(1/3)x) to get number always between 0 and 1 decreasing asymptotically towards 0 as 
+    x gets larger, i.e. probability of cooperation decreases as betrayals increase but never reaches 0"
+    (let* ((b (aref *betrayals* i j)) (prob (/ (log 10) (log (+ 10 (* (/ 1 3) b))))))
+    (* 100 prob))
+
+        
+    )   
+        ; (prob (/ (log 10) (log (+ 10 (* (/ 1 3)(3)))))
+        
+        
+
+(defun donate? (igs ogs same-group? i j)
   "(igs ogs same-group?)
 Does potential donor donate?
 If donor & recipient are in same group, then if donor cooperates in group, donor cooperates.
@@ -235,7 +249,9 @@ If donor & recipient are in different groups, then if donor cooperates out of gr
   (if same-group?
       (if (= igs 1)
           t)
-    (if (= ogs 1)
+    (if (and 
+        (= ogs 1)
+        (< (random 100) (calc-prob i j)))
         t)))
 
 ;;;(donate? 0 0 t) -> nil
@@ -262,6 +278,17 @@ Else increment ptr by *benefit*."
            *benefit*)))
     (setf (aref *torus* r c) agent)))
 
+(defun show-board (board)
+  (loop for i below (car (array-dimensions board)) do
+        (loop for j below (cadr (array-dimensions board)) do
+          (let ((cell (aref board i j)))
+            (format t "~a " cell)))
+        (format t "~%"))
+  (format t "~%"))
+
+
+
+
 (defun interact (doner-r doner-c recipient-r recipient-c)
   "(doner-r doner-c recipient-r recipient-c)
 Play out interaction between potential doner & potential recipient.
@@ -271,7 +298,7 @@ Same group tag? If donate then update ptrs."
          (recipient (aref *torus* recipient-r recipient-c))
          (igs (agent-igs agent))
          (ogs (agent-ogs agent))
-         (donate (donate? igs ogs same-tag)))
+         (donate (donate? igs ogs same-tag (agent-tag agent) (agent-tag recipient))))
     (if donate
         (progn
           (update-ptr doner-r doner-c 'cost)
@@ -281,12 +308,18 @@ Same group tag? If donate then update ptrs."
         (setf *ndefect* (1+ *ndefect*)))
         ;;;conditions for betrayal: agent ogs is 1, recipient ogs is 0, 
         ;;; then recipient ripped off agent
-    (if (and (not donate) 
+    (if (and
             (eq (agent-ogs agent) 1)
-            (eq (agent-ogs recipient) 0))
-        (setf (aref *betrayals* (agent-tag agent) (agent-tag recipient)) 
-            (1+ (aref *betrayals* (agent-tag agent) (agent-tag recipient)))))
-      ))
+            (eq (agent-ogs recipient) 0)
+            (not (eq (agent-tag agent) (agent-tag recipient))))
+        (progn 
+            ; (format t "~a ~a ~%" (agent-tag agent) (agent-tag recipient))
+            ; (format t "tag: ~a, igs: ~a, ogs: ~a ~%" (agent-tag agent) (agent-igs agent) (agent-ogs agent))
+            (setf (aref *betrayals* (agent-tag agent) (agent-tag recipient)) 
+            (1+ (aref *betrayals* (agent-tag agent) (agent-tag recipient))))
+        ; (show-board *betrayals*)
+        ))))
+
 
 (defun interactions (r c)
   "(r c)
@@ -880,7 +913,7 @@ Run ncycles & plot every nth cycle for torus of size."
                        (lists->file (proportion-of4-strategies strategies)
                                     (concatenate 'string *path* "proportions"))))
     (immigrate)
-    (all-interactions)
+    ; (all-interactions)
     (reproduction)
     (death)
     (if (= (mod i nth) 0)
@@ -890,6 +923,7 @@ Run ncycles & plot every nth cycle for torus of size."
           (plot-strategies i)))))
 
 
-(run-all-strategies 1000 20 11.35 6.64)
+; (run-all-strategies 1000 20 11.35 6.64)
 
 ;;;(run1plots ncycles nth size)
+(run1plots 201 100 50)
