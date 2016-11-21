@@ -926,4 +926,7 @@ Run ncycles & plot every nth cycle for torus of size."
 ; (run-all-strategies 1000 20 11.35 6.64)
 
 ;;;(run1plots ncycles nth size)
-(run1plots 201 100 50)
+(run1plots 1001 100 )
+
+
+

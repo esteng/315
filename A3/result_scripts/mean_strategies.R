@@ -21,5 +21,14 @@ ggplot(orig_mean_strategies)+
   labs(x = "cycle", y = "frequency")+
   ylim(0,1200)
 
+var.test(orig_mean_strategies$X3,my_mean_strategies$X3)
+t.test(orig_mean_strategies$X3,my_mean_strategies$X3,var.equal=FALSE, paired = FALSE)
 
-t.test(orig_mean_strategies$X3,my_mean_strategies$X3, paired = TRUE)
+var.test(orig_mean_strategies$X2,my_mean_strategies$X2)
+t.test(orig_mean_strategies$X2,my_mean_strategies$X2,var.equal=FALSE, paired = FALSE)
+
+var.test(orig_mean_strategies$X1,my_mean_strategies$X1)
+t.test(orig_mean_strategies$X1,my_mean_strategies$X1,var.equal=FALSE, paired = FALSE)
+
+var.test(orig_mean_strategies$X4,my_mean_strategies$X4)
+t.test(orig_mean_strategies$X4,my_mean_strategies$X4,var.equal=FALSE, paired = FALSE)
