@@ -9,3 +9,4 @@ ggplot(winners)+
   geom_bar(stat="identity", aes(x = 4, y = winners$V5, fill = "humanitarian"))+
   labs(x= "", y = "frequency")
   
+

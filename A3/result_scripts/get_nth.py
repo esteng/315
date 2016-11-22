@@ -12,7 +12,7 @@ def get_last_strategy(file):
             strat_counts[last] = 1
 
 for i in range(0,20):
-    path = "/Users/Elias/315/A3/results/my_strategies/strategies{}".format(i)
+    path = "/Users/Elias/315/A3/results/original/strategies{}".format(i)
     get_last_strategy(path)
 
 
